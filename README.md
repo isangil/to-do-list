@@ -35,7 +35,7 @@ Clone the repo:
 Build the site into your webroot (or symlink):
 
 * `cd to-do-list`
-* `drush make build-to_do_list.make www --prepare-install --contrib-destination=profiles/deims`
+* `drush make build-to_do_list.make www --prepare-install --contrib-destination=profiles/to_do_list`
 If you choose to build outside webroot, symlink with something like this 
 * 'sudo ln -s ~/mydir/to-do-list/www /var/www/html/todo'
 

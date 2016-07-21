@@ -8,9 +8,6 @@ core = "7.x"
 projects[admin_menu][version] = "3.0-rc5"
 projects[admin_menu][subdir] = "contrib"
 
-projects[admin_menu_toolbar][version] = "3.0-rc5"
-projects[admin_menu_toolbar][subdir] = "contrib"
-
 projects[ctools][version] = "1.9"
 projects[ctools][subdir] = "contrib"
 
@@ -39,7 +36,7 @@ projects[filefield_sources][patch][] = "http://drupal.org/files/2033269-attach-r
 projects[helper][version] = "1.5"
 projects[helper][subdir] = "contrib"
 
-projects[libraries][version] = "2.4"
+projects[libraries][version] = "2.3"
 projects[libraries][subdir] = "contrib"
 
 projects[menu_block][version] = "2.3"
