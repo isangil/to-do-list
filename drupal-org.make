@@ -69,7 +69,7 @@ projects[superfish][subdir] = "contrib"
 projects[taxonomy_csv][version] = "5.10"
 projects[taxonomy_csv][subdir] = "contrib"
 
-projects[views][version] = "3.13"
+projects[views][version] = "3.14"
 projects[views][subdir] = "contrib"
 
 projects[views_content_cache][version] = "3.0-alpha3"
@@ -82,10 +82,10 @@ projects[wysiwyg][subdir] = "contrib"
 ; Contributed themes
 ; -----------------------------------------------------------------------------
 
-projects[adaptivetheme][version] = "3.2"
+projects[adaptivetheme][version] = "3.4"
 projects[adaptivetheme][subdir] = "contrib"
 
-projects[pixture_reloaded][version] = "3.0"
+projects[pixture_reloaded][version] = "3.1"
 projects[pixture_reloaded][subdir] = "contrib"
 
 projects[shiny][version] = "1.7"
