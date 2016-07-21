@@ -49,3 +49,4 @@ dependencies[] = views
 dependencies[] = wysiwyg
 ; To-Do List Base
 dependencies[] = to_do_list_task_content_type
+dependencies[] = to_do_list_views
