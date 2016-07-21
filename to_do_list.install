@@ -1,0 +1,295 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Site Review installation profile.
+ */
+
+define('TO_DO_LIST_DEFAULT_THEME', 'to_do_list_theme');
+define('TO_DO_LIST_ADMIN_THEME', 'to_do_list_admin');
+
+/**
+ * Implements hook_install().
+ */
+function to_do_list_install() {
+  /*$modules = array();
+  foreach (system_rebuild_module_data() as $module) {
+    if (!empty($module->status)) {
+      $modules[$module->name] = $module->sort;
+    }
+  }
+  asort($modules);
+
+  // Run the install task for each enabled module.
+  foreach (array_keys($modules) as $module) {
+    module_invoke('to_do_list', 'install_' . $module);
+  }*/
+
+  to_do_list_install_filter();
+
+  to_do_list_install_user();
+
+  to_do_list_install_block();
+
+  to_do_list_install_system();
+
+  to_do_list_install_taxonomy();
+
+  // Contrib modules
+  to_do_list_install_admin_menu();
+
+  to_do_list_install_admin_select();
+
+  variable_set('menu_rebuild_needed', TRUE);
+
+  // Clear any normal messages from being displayed.
+  drupal_get_messages('status');
+}
+
+/**
+ * Profile install tasks for the block module.
+ */
+function to_do_list_install_block() {
+  $blocks = array(
+    array(
+      'module' => 'system',
+      'delta' => 'help',
+      'theme' => to_do_list_DEFAULT_THEME,
+      'status' => 1,
+      'weight' => -22,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'main-menu',
+      'theme' => to_do_list_DEFAULT_THEME,
+      'status' => 1,
+      'weight' => -20,
+      'region' => 'menu_bar',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'main',
+      'theme' => to_do_list_DEFAULT_THEME,
+      'status' => 1,
+      'weight' => -20,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'help',
+      'theme' => to_do_list_ADMIN_THEME,
+      'status' => 1,
+      'weight' => -22,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'main',
+      'theme' => to_do_list_ADMIN_THEME,
+      'status' => 1,
+      'weight' => -20,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+    ),
+  );
+  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+  foreach ($blocks as $block) {
+    $query->values($block);
+  }
+  $query->execute();
+}
+
+/**
+ * Profile install tasks for the filter module.
+ */
+function to_do_list_install_filter() {
+  $filtered_html_format = array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $filtered_html_format = (object) $filtered_html_format;
+  filter_format_save($filtered_html_format);
+
+  $full_html_format = array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $full_html_format = (object) $full_html_format;
+  filter_format_save($full_html_format);
+}
+
+/**
+ * Profile install tasks for the system module.
+ */
+function to_do_list_install_system() {
+  // Enable the default and admin themes.
+  theme_enable(array(TO_DO_LIST_DEFAULT_THEME, to_do_list_ADMIN_THEME));
+  variable_set('theme_default', TO_DO_LIST_DEFAULT_THEME);
+  variable_set('admin_theme', TO_DO_LIST_ADMIN_THEME);
+  variable_set('node_admin_theme', '1');
+
+  // Disable Bartik
+  //theme_disable(array('bartik'));
+
+  // Set settings for the theme including color scheme.
+  $form_state = array();
+  form_load_include($form_state, 'inc', 'system', 'system.admin');
+  $form_state['build_info']['args'][0] = TO_DO_LIST_DEFAULT_THEME;
+  $form_state['values']['scheme'] = 'lterantarctic';
+  drupal_form_submit('system_theme_settings', $form_state);
+
+  // Set up the ISO 8601 date format.
+  variable_set('date_format_iso_8601', 'Y-m-d\TH:i:sO');
+}
+
+/**
+ * Profile install tasks for the user module.
+ */
+function to_do_list_install_user() {
+  // Enable user picture support and set the default to a square thumbnail option.
+  variable_set('user_pictures', '1');
+  variable_set('user_picture_dimensions', '1024x1024');
+  variable_set('user_picture_file_size', '800');
+  variable_set('user_picture_style', 'thumbnail');
+
+  // Do not allow user account creation by default.
+  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
+
+  // Enable default permissions for system roles.
+  $format = filter_format_load('full_html');
+  $filtered_html_permission = filter_permission_name($format);
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', $filtered_html_permission));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', $filtered_html_permission));
+
+  // Create a default role for site administrators, with all available permissions assigned.
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 5;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+
+  $account = user_load(1);
+  $account->roles[$admin_role->rid] = $admin_role->name;
+  $account->data['admin_select'] = 'admin_menu';
+  user_save($account);
+
+}
+/**
+  * Profile install tasks for the admin_select module.
+  */
+ function to_do_list_install_admin_select() {
+   $admin_role = user_role_load_by_name('administrator');
+   variable_set('admin_select_defaults', array(
+   $admin_role->rid => array('admin_select_default' => 'admin_menu', 'weight' => -2),
+   DRUPAL_AUTHENTICATED_RID => array('admin_select_default' => 'toolbar', 'weight' => -1),
+ ));
+}
+
+/**
+ * Profile install tasks for the admin_menu module.
+ */
+function to_do_list_install_admin_menu() {
+  variable_set('admin_menu_components', array(
+    'admin_menu.icon' => TRUE,
+    'admin_menu.menu' => TRUE,
+    'admin_menu.search' => TRUE,
+    'admin_menu.users' => FALSE,
+    'admin_menu.account' => TRUE,
+    'shortcut.links' => TRUE,
+  ));
+}
+
+/**
+ * Profile install for taxonomy.
+ */
+function to_do_list_install_taxonomy() {
+  $path = drupal_get_path('profile', 'to_do_list') . '/exports/to-do-categories.csv';
+  $file = new SplFileObject($path);
+  while (!$file->eof()) {
+    $term = new stdClass();
+    list(
+        $term->name,
+        $term->vocabulary_machine_name,
+        $term->description,
+        $term->format,
+        $term->weight,
+        //(int) $term->parent,
+      ) = $file->fgetcsv();
+    if (!empty($term->vocabulary_machine_name)) {
+      taxonomy_term_save($term);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for install_configure_form().
+ *
+ * Allows the profile to alter the site configuration form.
+ */
+function to_do_list_form_install_configure_form_alter(&$form, $form_state) {
+  // Pre-populate the site name with the server name.
+  $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
+
+  // Disable update notifications by default.
+  $form['update_notifications']['update_status_module']['#default_value'] = array();
+
+  $form['#submit'][] = 'to_do_list_form_install_configure_form_submit';
+}
+//not sure we need this hook.
+function to_do_list_form_install_configure_form_submit($form, &$form_state) {
+  variable_set('environment', $form_state['values']['environment']);
+  module_invoke_all('environment_switch', $form_state['values']['environment'], NULL);
+}

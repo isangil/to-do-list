@@ -1,0 +1,67 @@
+name = "To Do List"
+description = "Drupal 7 based To-Do list"
+core = 7.x
+exclusive = TRUE
+; -----------------------------------------------------------------------------
+; Dependencies
+; -----------------------------------------------------------------------------
+; Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = contextual
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = toolbar
+; Contrib
+dependencies[] = admin_menu
+dependencies[] = admin_menu_toolbar
+dependencies[] = admin_select
+dependencies[] = ctools
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = date_popup
+dependencies[] = date_views
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = entity_view_mode
+dependencies[] = entityreference
+dependencies[] = features
+dependencies[] = field_group
+dependencies[] = field_permissions
+dependencies[] = field_validation
+dependencies[] = file_download_count
+dependencies[] = file_entity
+dependencies[] = filefield_sources
+dependencies[] = helper
+dependencies[] = libraries
+dependencies[] = menu_block
+dependencies[] = module_filter
+dependencies[] = pathauto
+dependencies[] = pathauto_persist
+dependencies[] = print
+dependencies[] = print_ui
+dependencies[] = strongarm
+dependencies[] = superfish
+dependencies[] = token
+dependencies[] = token_field
+dependencies[] = token_formatters
+dependencies[] = views
+dependencies[] = wysiwyg
+dependencies[] = wysiwyg_linebreaks
+; To-Do List Base
+dependencies[] = site_review_article
