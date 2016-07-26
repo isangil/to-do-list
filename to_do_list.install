@@ -25,8 +25,6 @@ function to_do_list_install() {
     module_invoke('to_do_list', 'install_' . $module);
   }*/
 
-  to_do_list_install_filter();
-
   to_do_list_install_user();
 
   to_do_list_install_block();
@@ -54,7 +52,7 @@ function to_do_list_install_block() {
     array(
       'module' => 'system',
       'delta' => 'help',
-      'theme' => to_do_list_DEFAULT_THEME,
+      'theme' => TO_DO_LIST_DEFAULT_THEME,
       'status' => 1,
       'weight' => -22,
       'region' => 'content',
@@ -64,7 +62,7 @@ function to_do_list_install_block() {
     array(
       'module' => 'system',
       'delta' => 'main-menu',
-      'theme' => to_do_list_DEFAULT_THEME,
+      'theme' => TO_DO_LIST_DEFAULT_THEME,
       'status' => 1,
       'weight' => -20,
       'region' => 'menu_bar',
@@ -74,7 +72,7 @@ function to_do_list_install_block() {
     array(
       'module' => 'system',
       'delta' => 'main',
-      'theme' => to_do_list_DEFAULT_THEME,
+      'theme' => TO_DO_LIST_DEFAULT_THEME,
       'status' => 1,
       'weight' => -20,
       'region' => 'content',
@@ -84,7 +82,7 @@ function to_do_list_install_block() {
     array(
       'module' => 'system',
       'delta' => 'help',
-      'theme' => to_do_list_ADMIN_THEME,
+      'theme' => TO_DO_LIST_ADMIN_THEME,
       'status' => 1,
       'weight' => -22,
       'region' => 'content',
@@ -94,7 +92,7 @@ function to_do_list_install_block() {
     array(
       'module' => 'system',
       'delta' => 'main',
-      'theme' => to_do_list_ADMIN_THEME,
+      'theme' => TO_DO_LIST_ADMIN_THEME,
       'status' => 1,
       'weight' => -20,
       'region' => 'content',
@@ -110,71 +108,11 @@ function to_do_list_install_block() {
 }
 
 /**
- * Profile install tasks for the filter module.
- */
-function to_do_list_install_filter() {
-  $filtered_html_format = array(
-    'format' => 'filtered_html',
-    'name' => 'Filtered HTML',
-    'weight' => 0,
-    'filters' => array(
-      // URL filter.
-      'filter_url' => array(
-        'weight' => 0,
-        'status' => 1,
-      ),
-      // HTML filter.
-      'filter_html' => array(
-        'weight' => 1,
-        'status' => 1,
-      ),
-      // Line break filter.
-      'filter_autop' => array(
-        'weight' => 2,
-        'status' => 1,
-      ),
-      // HTML corrector filter.
-      'filter_htmlcorrector' => array(
-        'weight' => 10,
-        'status' => 1,
-      ),
-    ),
-  );
-  $filtered_html_format = (object) $filtered_html_format;
-  filter_format_save($filtered_html_format);
-
-  $full_html_format = array(
-    'format' => 'full_html',
-    'name' => 'Full HTML',
-    'weight' => 1,
-    'filters' => array(
-      // URL filter.
-      'filter_url' => array(
-        'weight' => 0,
-        'status' => 1,
-      ),
-      // Line break filter.
-      'filter_autop' => array(
-        'weight' => 1,
-        'status' => 1,
-      ),
-      // HTML corrector filter.
-      'filter_htmlcorrector' => array(
-        'weight' => 10,
-        'status' => 1,
-      ),
-    ),
-  );
-  $full_html_format = (object) $full_html_format;
-  filter_format_save($full_html_format);
-}
-
-/**
  * Profile install tasks for the system module.
  */
 function to_do_list_install_system() {
   // Enable the default and admin themes.
-  theme_enable(array(TO_DO_LIST_DEFAULT_THEME, to_do_list_ADMIN_THEME));
+  theme_enable(array(TO_DO_LIST_DEFAULT_THEME, TO_DO_LIST_ADMIN_THEME));
   variable_set('theme_default', TO_DO_LIST_DEFAULT_THEME);
   variable_set('admin_theme', TO_DO_LIST_ADMIN_THEME);
   variable_set('node_admin_theme', '1');
@@ -257,6 +195,7 @@ function to_do_list_install_admin_menu() {
  */
 function to_do_list_install_taxonomy() {
   $path = drupal_get_path('profile', 'to_do_list') . '/exports/to-do-categories.csv';
+  $status_vocab = taxonomy_vocabulary_machine_name_load('status'); 
   $file = new SplFileObject($path);
   while (!$file->eof()) {
     $term = new stdClass();
@@ -269,6 +208,7 @@ function to_do_list_install_taxonomy() {
         //(int) $term->parent,
       ) = $file->fgetcsv();
     if (!empty($term->vocabulary_machine_name)) {
+      $term->vid = $status_vocab->vid;
       taxonomy_term_save($term);
     }
   }
@@ -287,9 +227,4 @@ function to_do_list_form_install_configure_form_alter(&$form, $form_state) {
   $form['update_notifications']['update_status_module']['#default_value'] = array();
 
   $form['#submit'][] = 'to_do_list_form_install_configure_form_submit';
-}
-//not sure we need this hook.
-function to_do_list_form_install_configure_form_submit($form, &$form_state) {
-  variable_set('environment', $form_state['values']['environment']);
-  module_invoke_all('environment_switch', $form_state['values']['environment'], NULL);
 }
