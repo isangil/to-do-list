@@ -206,7 +206,7 @@ function to_do_list_install_taxonomy() {
       $term->vid = $status_vocab->vid;
       taxonomy_term_save($term);
     } else {
-      watchdog('to_do_list.install','Vocabulary Machine Name property not set', WATCHDOG_NOTICE)
+      watchdog('to_do_list.install','Vocabulary Machine Name property not set', WATCHDOG_NOTICE);
     }
   }
 }
