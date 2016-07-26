@@ -204,7 +204,10 @@ function to_do_list_install_taxonomy() {
       ) = $file->fgetcsv();
     if (!empty($term->vocabulary_machine_name)) {
       $term->vid = $status_vocab->vid;
-      taxonomy_term_save($term);
+      if( taxonomy_term_save($term)) {
+        drupal_set_message('Term Added to Status');
+      }
+      
     } else {
       watchdog('to_do_list.install','Vocabulary Machine Name property not set', WATCHDOG_NOTICE);
     }
