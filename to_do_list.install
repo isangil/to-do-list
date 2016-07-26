@@ -135,11 +135,6 @@ function to_do_list_install_system() {
  * Profile install tasks for the user module.
  */
 function to_do_list_install_user() {
-  // Enable user picture support and set the default to a square thumbnail option.
-  variable_set('user_pictures', '1');
-  variable_set('user_picture_dimensions', '1024x1024');
-  variable_set('user_picture_file_size', '800');
-  variable_set('user_picture_style', 'thumbnail');
 
   // Do not allow user account creation by default.
   variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
@@ -210,6 +205,8 @@ function to_do_list_install_taxonomy() {
     if (!empty($term->vocabulary_machine_name)) {
       $term->vid = $status_vocab->vid;
       taxonomy_term_save($term);
+    } else {
+      watchdog('to_do_list.install','Vocabulary Machine Name property not set', WATCHDOG_NOTICE)
     }
   }
 }
@@ -225,6 +222,6 @@ function to_do_list_form_install_configure_form_alter(&$form, $form_state) {
 
   // Disable update notifications by default.
   $form['update_notifications']['update_status_module']['#default_value'] = array();
-
-  $form['#submit'][] = 'to_do_list_form_install_configure_form_submit';
 }
+
+
