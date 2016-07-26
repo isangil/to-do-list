@@ -1,7 +1,7 @@
-Awaiting Info,status,When the task depends on somebody else,filtered_html,0
-Cancelled,status,Task no longer needs to be resolved,filtered_html,0
-Finished,status,We are done with this task,filtered_html,0
-In Progress,status,We are working on it,filtered_html,0
-Not Started,status,We did not start yet,filtered_html,0
-On Hold,status,We are in a holding pattern here,filtered_html,0
-Started,status,We started working on this task,filtered_html,0
+Awaiting Info,status,When the task depends on somebody else,filtered_html,0,
+Cancelled,status,Task no longer needs to be resolved,filtered_html,0,
+Finished,status,We are done with this task,filtered_html,0,
+In Progress,status,We are working on it,filtered_html,0,
+Not Started,status,We did not start yet,filtered_html,0,
+On Hold,status,We are in a holding pattern here,filtered_html,0,
+Started,status,We started working on this task,filtered_html,0,
