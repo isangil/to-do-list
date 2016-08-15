@@ -14,6 +14,15 @@ projects[admin_select][subdir] = "contrib"
 projects[ctools][version] = "1.9"
 projects[ctools][subdir] = "contrib"
 
+projects[eck][version] = "2.0-rc8"
+projects[eck][subdir] = "contrib"
+
+projects[entity][version] = "1.7"
+projects[entity][subdir] = "contrib"
+
+projects[entity_view_mode][version] = "1.0-rc1"
+projects[entity_view_mode][subdir] = "contrib"
+
 projects[features][version] = "2.10"
 projects[features][subdir] = "contrib"
 
