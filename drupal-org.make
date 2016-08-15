@@ -69,6 +69,15 @@ projects[superfish][subdir] = "contrib"
 projects[taxonomy_csv][version] = "5.10"
 projects[taxonomy_csv][subdir] = "contrib"
 
+projects[token][version] = "1.6"
+projects[token][subdir] = "contrib"
+
+projects[token_field][version] = "1.x-dev"
+projects[token_field][subdir] = "contrib"
+
+projects[token_formatters][version] = "1.2"
+projects[token_formatters][subdir] = "contrib"
+
 projects[views][version] = "3.14"
 projects[views][subdir] = "contrib"
 
