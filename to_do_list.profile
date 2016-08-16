@@ -37,5 +37,15 @@ function to_do_list_date_formats() {
  * Preprocess the install page variables to add our logo.
  */
 function to_do_list_process_maintenance_page(&$variables) {
+
+  // Cache settings.
+  variable_set('cache', 1);
+  variable_set('block_cache', 1);
+  variable_set('preprocess_css', 1);
+  variable_set('preprocess_js', 1);
+
+  $devel_modules = array('views_ui',);
+  module_enable($devel_modules);
+
   $variables['logo'] = drupal_get_path('profile', 'to_do_list') . '/logo.png';
 }

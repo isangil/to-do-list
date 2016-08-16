@@ -35,7 +35,6 @@ function to_do_list_install() {
 
   // Contrib modules
   to_do_list_install_admin_menu();
-
   to_do_list_install_admin_select();
 
   variable_set('menu_rebuild_needed', TRUE);
@@ -184,7 +183,7 @@ function to_do_list_install_system() {
   $form_state = array();
   form_load_include($form_state, 'inc', 'system', 'system.admin');
   $form_state['build_info']['args'][0] = TO_DO_LIST_DEFAULT_THEME;
-  $form_state['values']['scheme'] = 'lterantarctic';
+  $form_state['values']['scheme'] = 'deepblue';
   drupal_form_submit('system_theme_settings', $form_state);
 
   // Set up the ISO 8601 date format.
