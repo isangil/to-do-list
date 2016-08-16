@@ -248,29 +248,46 @@ function to_do_list_install_admin_menu() {
  * Profile install for taxonomy.
  */
 function to_do_list_install_taxonomy() {
-  $path = drupal_get_path('profile', 'to_do_list') . '/exports/to-do-categories.csv';
-  $status_vocab = taxonomy_vocabulary_machine_name_load('status'); 
-  $file = new SplFileObject($path);
-  while (!$file->eof()) {
-    $term = new stdClass();
-    list(
-        $term->name,
-        $term->vocabulary_machine_name,
-        $term->description,
-        $term->format,
-        $term->weight,
-        //(int) $term->parent,
-      ) = $file->fgetcsv();
-    if (!empty($term->vocabulary_machine_name)) {
-      $term->vid = $status_vocab->vid;
-      if( taxonomy_term_save($term)) {
-        drupal_set_message('Term Added to Status');
-      }
-      
-    } else {
-      watchdog('to_do_list.install','Vocabulary Machine Name property not set', WATCHDOG_NOTICE);
-    }
-  }
+  $vocab = taxonomy_vocabulary_machine_name_load('status');
+  $vid = $vocab->vid;
+
+  $term = new stdClass();
+
+  $term->name = 'Awaiting Info';
+  $term->vid = $vid;
+  $term->description = 'When the task depends on somebody else';
+  taxonomy_term_save($term);
+
+  $term->name = 'Cancelled';
+  $term->vid = $vid;
+  $term->description = 'Task no longer needs to be resolved';
+  taxonomy_term_save($term);
+
+  $term->name = 'Finished';
+  $term->vid = $vid;
+  $term->description = 'We are done with this task';
+  taxonomy_term_save($term);
+
+  $term->name = 'In Progress';
+  $term->vid = $vid;
+  $term->description = 'We are working on it';
+  taxonomy_term_save($term);
+
+  $term->name = 'Not Started';
+  $term->vid = $vid;
+  $term->description = 'We did not start yet';
+  taxonomy_term_save($term);
+
+  $term->name = 'On Hold';
+  $term->vid = $vid;
+  $term->description = 'We are in a holding pattern here';
+  taxonomy_term_save($term);
+
+  $term->name = 'Started';
+  $term->vid = $vid;
+  $term->description = 'We started working on this task';
+  taxonomy_term_save($term);
+
 }
 
 /**
